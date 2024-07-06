@@ -24,7 +24,7 @@ from langchain_google_firestore import FirestoreChatMessageHistory
 from IPython.display import display, Markdown
 from openai import OpenAI
 import re
-os.environ["OPENAI_API_KEY"] = 
+os.environ["OPENAI_API_KEY"] = "sk-proj-1f5DTKZuly5IONRVEvLhT3BlbkFJLm2eSyKLQhr7mgLJ0GEc"
 
 CHUNK_SIZE = 1096
 CHUNK_OVERLAP = 1096
@@ -42,42 +42,7 @@ session_id = "Default"
 directory = "./"
 language = "繁體中文"
 
-# 初始化 session_state 中的变量
-if 'logged_in' not in st.session_state:
-    st.session_state.logged_in = False
-if 'role' not in st.session_state:
-    st.session_state.role = ''
 
-def login_page():
-    st.title('Login Interface with Streamlit and Flask')
-    username = st.text_input('Username')
-    password = st.text_input('Password', type='password')
-    role = st.selectbox('Role', ['teacher', 'student'])
-
-    if st.button('Login'):
-        response = requests.post('http://localhost:5000/login', json={'username': username, 'password': password, 'role': role})
-        data = response.json()
-        if data['status'] == 'success':
-            st.session_state.logged_in = True
-            st.session_state.role = data['role']
-            st.experimental_rerun()
-        else:
-            st.error(data['message'])
-
-# 老師的頁面
-def teacher_page():
-    st.title('Teacher Page')
-    st.write('Welcome, Teacher!')
-
-    uploaded_files = st.file_uploader("Choose a file", accept_multiple_files=True)
-    for uploaded_file in uploaded_files:
-        st.write("filename:", uploaded_file.name)
-        save_uploaded_file(uploaded_file)
-
-    if st.button('Logout'):
-        st.session_state.logged_in = False
-        st.session_state.role = ''
-        st.experimental_rerun()
 
 # 保存上传的文件
 def save_uploaded_file(uploaded_file):
@@ -195,7 +160,7 @@ conversational_rag_chain = RunnableWithMessageHistory(
 )
 
 client = OpenAI(
-                api_key =
+                api_key = f'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'
 )
 def openai_api(prompt):
   completion = client.chat.completions.create(
