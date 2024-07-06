@@ -195,7 +195,7 @@ conversational_rag_chain = RunnableWithMessageHistory(
 )
 
 client = OpenAI(
-                api_key = f'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'
+                api_key =
 )
 def openai_api(prompt):
   completion = client.chat.completions.create(
