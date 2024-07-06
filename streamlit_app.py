@@ -24,7 +24,7 @@ from langchain_google_firestore import FirestoreChatMessageHistory
 from IPython.display import display, Markdown
 from openai import OpenAI
 import re
-os.environ["OPENAI_API_KEY"] = "sk-proj-1f5DTKZuly5IONRVEvLhT3BlbkFJLm2eSyKLQhr7mgLJ0GEc"
+os.environ["OPENAI_API_KEY"] = 
 
 CHUNK_SIZE = 1096
 CHUNK_OVERLAP = 1096
