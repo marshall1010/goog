@@ -24,7 +24,7 @@ from langchain_google_firestore import FirestoreChatMessageHistory
 from IPython.display import display, Markdown
 from openai import OpenAI
 import re
-os.environ["OPENAI_API_KEY"] =
+os.environ["OPENAI_API_KEY"] = ""
 
 CHUNK_SIZE = 1096
 CHUNK_OVERLAP = 1096
@@ -160,7 +160,7 @@ conversational_rag_chain = RunnableWithMessageHistory(
 )
 
 client = OpenAI(
-                api_key =
+                api_key = f''
 )
 def openai_api(prompt):
   completion = client.chat.completions.create(
@@ -446,8 +446,8 @@ def evaluate_student_answer(student_answers, question):
       "
       comment = openai_api(prompt11);
       display(Markdown(comment));
-
-      return {"您的分數為": total_score/5},comment
+      final_score = total_score/5
+      return final_score,comment
 
 # 初始化 session_state 中的变量
 if 'logged_in' not in st.session_state:
@@ -484,28 +484,39 @@ def teacher_page():
         st.session_state.role = ''
         st.experimental_rerun()
 # 學生的頁面
-def show_stundent_page():
+def show_student_page():
+    question1 = ""
+    score = 0
+    score_text = ""
+
     st.title('Student Page')
     st.write('Welcome, Student!')
+
+
+    # 創建一個按鈕，按下後生成問題
     if st.button('Generate Problem'):
-         question = give_problems()  # 可以传递一个现有问题的列表
-         st.session_state["question"] = question
-         st.text_area("Question", question, height=100)
-         question = st.text_input("question")
-         answer1 = st.text_input("answer")
+       question1 = give_problems()  # 生成問題並存入 session_state
+
+    # 顯示問題文本框，並設置為不可編輯
+    st.text_area("Question", question1, height=100)
+
+    # 用戶輸入答案
+    answer1 = st.text_input("Answer")
+
+    # 創建按鈕進行評分
     if st.button('Score'):
-         [score, score_text] = evaluate_student_answer(answer1, question)
-         st.text_area("Score", score, height=100)
-         st.text_area("Feedback", score_text, height=100)
-    if st.button('Logout'):
-        st.session_state.logged_in = False
-        st.session_state.role = ''
-        st.experimental_rerun()
+        score, score_text = evaluate_student_answer(answer1, question1)
+    st.text_area("Score",    score, height=50)
+    st.text_area("Feedback", score_text, height=100)
+       
+
  
 if st.session_state.logged_in:
     if st.session_state.role == 'teacher':
         teacher_page()
     elif st.session_state.role == 'student':
-        show_stundent_page()
+        show_student_page()
 else:
     login_page()
+    teacher_page()
+    show_student_page()
